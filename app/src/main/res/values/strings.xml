@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CurrencyExchange</string>
+    <string name="calculate_button_name">Do</string>
+    <string name="currency_input_hint_text">Enter a valid decimal number</string>
 </resources>
