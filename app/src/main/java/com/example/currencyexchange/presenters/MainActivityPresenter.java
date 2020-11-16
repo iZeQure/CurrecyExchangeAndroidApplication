@@ -11,16 +11,15 @@ import java.util.ArrayList;
 public class MainActivityPresenter {
     private CurrencyManager currencyManager;
     private View view;
+    private String base;
 
     public MainActivityPresenter(View view) {
         this.currencyManager = new CurrencyManager();
         this.view = view;
-
-        this.view.getRatesLoaded(currencyManager.getRates("DKK"));
     }
 
     public void setBase(String base) {
-
+        this.view.getRatesLoaded(currencyManager.getRates(base));
     }
 
     public interface View {
