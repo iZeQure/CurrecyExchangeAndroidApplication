@@ -1,26 +1,28 @@
 package com.example.currencyexchange.currencies;
 
+import android.content.Context;
+
 import com.example.currencyexchange.currencies.interfaces.CurrencyDAO;
 import com.example.currencyexchange.currencies.models.Rate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Represents a mocked class with static data.
  * */
 public class MockCurrency implements CurrencyDAO {
-
     /**
      * Gets the current rates.
      *
-     * @param base Provide the name of the currency name.
+     * @param base              The base of the currency to differentiate.
+     * @param amountToCalculate The amount the user has input, to get the currency for.
+     * @param context           The context, where the cache dir is stored.
      * @return A list of rates.
      * @see Rate for possible data.
      */
     @Override
-    public ArrayList<Rate> getRates(String base) {
+    public ArrayList<Rate> getRates(String base, double amountToCalculate, Context context) {
         return new ArrayList<Rate>(Arrays.asList(
                 new Rate("USD", 1.636492),
                 new Rate("EUR", 1.739516),

@@ -48,7 +48,8 @@ public class CurrencyAdapter extends ArrayAdapter<Rate> {
         // Get the current rate from the list.
         Rate currentRate = ratesList.get(position);
 
-//        ImageView image = (ImageView)listItem.findViewById(R.id.imageView_currency_poster);
+        // Set flag to the right currency.
+//        ImageView image = (ImageView)listItem.findViewById(R.drawable);
 //        image.setImageResource();
 
         // Get view elements to append data to.
@@ -58,6 +59,8 @@ public class CurrencyAdapter extends ArrayAdapter<Rate> {
         // Set data to the specified view elements.
         name.setText(currentRate.getName()); // Set the currency name.
         currencySpotRate.setText(String.valueOf(currentRate.getSpotRate())); // Set the spot rate for the currency.
+
+        notifyDataSetChanged();
 
         // Return list.
         return listItem;

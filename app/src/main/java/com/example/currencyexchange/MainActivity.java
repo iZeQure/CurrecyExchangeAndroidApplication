@@ -3,6 +3,7 @@ package com.example.currencyexchange;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MainActivityPresenter.View {
 
+    private CurrencyAdapter currencyAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
         setCurrencyBaseSpinnerItems();
 
         Button currencyCalculateButton = findViewById(R.id.currencyCalculateButton);
+        EditText currencyInputEditText = findViewById(R.id.currencyInput);
 
         /**
          * Calculate exchange button.
@@ -40,7 +44,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
 
                         // Check if the value is NOT null.
                         if (selectedItemValue != null) {
-                            presenter.setBase(selectedItemValue);
+                            String currencyInputValue = currencyInputEditText.getText().toString();
+
+                            if (!currencyInputValue.equals("") && !currencyInputValue.equals("0"))
+                                presenter.calculateCurrency(selectedItemValue, Double.valueOf(currencyInputValue), this);
+                            else {
+                                presenter.calculateCurrency(selectedItemValue, 1, this);
+                            }
                         }
                     });
     }
@@ -49,8 +59,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
     public void getRatesLoaded(ArrayList<Rate> rates) {
         if (rates != null) {
             if (!rates.isEmpty()) {
-                CurrencyAdapter currencyAdapter = new CurrencyAdapter(this, rates);
-                ((ListView) findViewById(R.id.currencyListView)).setAdapter(currencyAdapter);
+
+                try {
+                    currencyAdapter = new CurrencyAdapter(this, rates);
+                    ((ListView) findViewById(R.id.currencyListView)).setAdapter(currencyAdapter);
+                    Thread.sleep(1500);
+
+                    currencyAdapter.notifyDataSetChanged();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
     }
