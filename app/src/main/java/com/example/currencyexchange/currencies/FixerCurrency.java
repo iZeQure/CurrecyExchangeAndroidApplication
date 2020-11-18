@@ -7,6 +7,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.currencyexchange.currencies.interfaces.CurrencyDAO;
 import com.example.currencyexchange.currencies.models.Rate;
+import com.example.currencyexchange.presenters.OnDataChanged;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,7 +35,7 @@ public class FixerCurrency implements CurrencyDAO {
     private final String ACCESS_KEY = "db38c1a7dd3b413b1ff93fa16c38387c";
 
     private ArrayList<Rate> rates = new ArrayList<>();
-    private JsonObjectRequest apiRequest;
+    private ArrayList<OnDataChanged> listeners = new ArrayList<>();
     private String currencyBase;
     private double currencyAmount;
 
@@ -90,7 +91,19 @@ public class FixerCurrency implements CurrencyDAO {
         // Make api request for the data.
         getSpotRateDataFromFixerAPI(context);
 
+        for (OnDataChanged data : listeners) {
+            data.onDataReceived(rates);
+        }
+
         // Return the data.
         return rates;
+    }
+
+    public void addListener(OnDataChanged dataChanged) {
+        listeners.add(dataChanged);
+    }
+
+    public void removeListener(OnDataChanged dataChanged) {
+        listeners.remove(dataChanged);
     }
 }

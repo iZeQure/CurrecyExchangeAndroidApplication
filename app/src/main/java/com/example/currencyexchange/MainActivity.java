@@ -15,8 +15,8 @@ import com.example.currencyexchange.presenters.MainActivityPresenter;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MainActivityPresenter.View {
-
     private CurrencyAdapter currencyAdapter;
+    private ListView currencyListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
 
         Button currencyCalculateButton = findViewById(R.id.currencyCalculateButton);
         EditText currencyInputEditText = findViewById(R.id.currencyInput);
+        currencyListView = findViewById(R.id.currencyListView);
 
         /**
          * Calculate exchange button.
@@ -59,21 +60,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
     public void getRatesLoaded(ArrayList<Rate> rates) {
         if (rates != null) {
             if (!rates.isEmpty()) {
+                currencyAdapter = new CurrencyAdapter(this, rates);
+                currencyListView.setAdapter(currencyAdapter);
 
-                try {
-                    currencyAdapter = new CurrencyAdapter(this, rates);
-                    ((ListView) findViewById(R.id.currencyListView)).setAdapter(currencyAdapter);
-                    Thread.sleep(1500);
-
-                    currencyAdapter.notifyDataSetChanged();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
+                currencyAdapter.notifyDataSetChanged();
+                currencyListView.invalidateViews();
             }
         }
     }
-
     /**
      * Sets the base currencies into a spinner.
      * */

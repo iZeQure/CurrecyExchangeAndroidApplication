@@ -60,8 +60,6 @@ public class CurrencyAdapter extends ArrayAdapter<Rate> {
         name.setText(currentRate.getName()); // Set the currency name.
         currencySpotRate.setText(String.valueOf(currentRate.getSpotRate())); // Set the spot rate for the currency.
 
-        notifyDataSetChanged();
-
         // Return list.
         return listItem;
     }

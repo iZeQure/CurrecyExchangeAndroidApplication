@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.currencyexchange.currencies.FixerCurrency;
 import com.example.currencyexchange.currencies.interfaces.CurrencyDAO;
 import com.example.currencyexchange.currencies.models.Rate;
+import com.example.currencyexchange.presenters.OnDataChanged;
 
 import java.util.ArrayList;
 
@@ -23,5 +24,9 @@ public class CurrencyManager {
      * */
     public ArrayList<Rate> getRates(String base, double amountToCalculate, Context context) {
         return currency.getRates(base, amountToCalculate, context);
+    }
+
+    public void addListener(OnDataChanged dataChanged) {
+        ((FixerCurrency)currency).addListener(dataChanged);
     }
 }
