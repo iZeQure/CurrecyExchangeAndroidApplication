@@ -62,9 +62,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
             if (!rates.isEmpty()) {
                 currencyAdapter = new CurrencyAdapter(this, rates);
                 currencyListView.setAdapter(currencyAdapter);
-
-                currencyAdapter.notifyDataSetChanged();
                 currencyListView.invalidateViews();
+                currencyAdapter.notifyDataSetChanged();
             }
         }
     }

@@ -28,7 +28,7 @@ public class CurrencyAdapter extends ArrayAdapter<Rate> {
     /**
      * Initialize a new currency adapter, which inherits from Array Adapter.
      * @see ArrayAdapter
-     * @param context
+     * @param context A context of where the cache dir is located.
      * @param list The list of data to use.
      * */
     public CurrencyAdapter(@NonNull Context context, @SuppressLint("SupportAnnotationUsage") @LayoutRes ArrayList<Rate> list) {

@@ -34,13 +34,31 @@ public class FixerCurrency implements CurrencyDAO {
      * */
     private final String ACCESS_KEY = "db38c1a7dd3b413b1ff93fa16c38387c";
 
+    /**
+     * Create a list of rate, to store the rates from the API.
+     * */
     private ArrayList<Rate> rates = new ArrayList<>();
+
+    /**
+     * Create a list of OnDataChanged, which provides the ability
+     * to have observers look at this collection, and hook onto it,
+     * while the observable does it's thing.
+     * */
     private ArrayList<OnDataChanged> listeners = new ArrayList<>();
+
+    /**
+     * Defines a field to store the currency base at.
+     * */
     private String currencyBase;
+
+    /**
+     * Defines a field to store the currency amount, to be calculated with the base.
+     * */
     private double currencyAmount;
 
     /**
      * Make API Request to fixer.
+     * @param context Represents a place to store the cache dir.
      * */
     public void getSpotRateDataFromFixerAPI(Context context) {
         // Placeholder json request. // BASE_API_URL + ENDPOINT + "?access_key=" + ACCESS_KEY
@@ -49,19 +67,34 @@ public class FixerCurrency implements CurrencyDAO {
 
         // Make new api request, to obtain json objects.
         JsonObjectRequest newReq = new JsonObjectRequest(
-                Request.Method.GET,
-                requestURL,
+                Request.Method.GET, // Which request method to use.
+                requestURL,         // The URL to request to.
                 null,
                 response -> {
                     try {
+                        /**
+                         * Pack the response into a JSONObject.
+                         * */
                         JSONObject jsonObject = new JSONObject(response.toString());
 
+                        /**
+                         * Get the rates from the packaged json object.
+                         * */
                         JSONObject ratesJsonObject = jsonObject.getJSONObject("rates");
 
+                        /**
+                         * Store the keys from the rates into an iterator of strings.
+                         * */
                         Iterator<String> keys = ratesJsonObject.keys();
 
+                        /**
+                         * Loop through all rates.
+                         * */
                         for (int i = 0; i < ratesJsonObject.length(); i++) {
+                            // Store a temp key string.
                             String tempKey = keys.next();
+
+                            // Add new rate to the list of rates.
                             rates.add(new Rate(tempKey, (ratesJsonObject.getDouble(tempKey) * currencyAmount)));
                         }
                     } catch (JSONException e) {
@@ -99,10 +132,18 @@ public class FixerCurrency implements CurrencyDAO {
         return rates;
     }
 
+    /**
+     * Add new observer onto the observable.
+     * @param dataChanged Represents the observable to get notifications from.
+     * */
     public void addListener(OnDataChanged dataChanged) {
         listeners.add(dataChanged);
     }
 
+    /**
+     * Remove an existing observer.
+     * @param dataChanged Represents the observer to remove from the observable.
+     * */
     public void removeListener(OnDataChanged dataChanged) {
         listeners.remove(dataChanged);
     }
